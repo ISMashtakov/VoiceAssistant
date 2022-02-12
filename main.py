@@ -1,5 +1,6 @@
 from recognize import Recognizer
 
+NAME = "Пятница"
 
 if __name__ == '__main__':
-    Recognizer().wait_name()
+    Recognizer(NAME).wait_name()

@@ -1,27 +1,31 @@
+import string
+
 import speech_recognition as sr
 
 
 class Recognizer:
-    MY_NAME = "Пятница"
-    LANGUAGE = 'ru-RU'
-
-    def __init__(self):
+    def __init__(self, name: str, language: str = 'ru-RU'):
+        self.name = name
+        self.language = language
         self._recognition = sr.Recognizer()
 
-    def test(self):
-        with sr.Microphone() as mic:
-            self._recognition.adjust_for_ambient_noise(mic)
-            audio = self._recognition.listen(mic)
-        print(self._recognition.recognize_google(audio, language=Recognizer.LANGUAGE))
+    @staticmethod
+    def print_detecting_phrase():
+        print("Я тебя услышал!")
+
+    def is_welcome_phrase(self, phrase: str) -> bool:
+        words = map(lambda x: x.strip(string.punctuation), phrase.lower().split())
+        clean_phrase = ' '.join(words)
+        return f"привет {self.name}".lower() in clean_phrase
 
     def wait_name(self):
         with sr.Microphone() as mic:
             while True:
                 self._recognition.adjust_for_ambient_noise(mic)
                 audio = self._recognition.listen(mic)
-                text = self._recognition.recognize_google(audio, language=Recognizer.LANGUAGE)
-                if f"Привет {Recognizer.MY_NAME}".lower() in str(text).lower():
-                    print("Я тебя услышал!")
+                text = self._recognition.recognize_google(audio, language=self.language)
+                if self.is_welcome_phrase(text):
+                    self.print_detecting_phrase()
                     break
 
     def get_next_command(self) -> str:
@@ -29,3 +33,4 @@ class Recognizer:
         with sr.Microphone() as mic:
             self._recognition.adjust_for_ambient_noise(mic)
             audio = self._recognition.listen(mic)
+            return self._recognition.recognize_google(audio, language=self.language)
