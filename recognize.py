@@ -22,7 +22,7 @@ class Recognizer:
     def is_welcome_phrase(self, phrase: str) -> bool:
         words = map(lambda x: x.strip(string.punctuation), phrase.lower().split())
         clean_phrase = ' '.join(words)
-        return self.name.lower() in clean_phrase
+        return f"привет {self.name}".lower() in clean_phrase
 
     def wait_name(self):
         with sr.Microphone() as mic:
