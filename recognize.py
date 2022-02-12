@@ -1,6 +1,7 @@
 import string
 
 import speech_recognition as sr
+from audio.text_reader import TextReader
 
 
 class Recognizer:
@@ -8,9 +9,10 @@ class Recognizer:
         self.name = name
         self.language = language
         self._recognition = sr.Recognizer()
+        self._text_reader = TextReader()
 
-    @staticmethod
-    def print_detected_phrase():
+    def print_detected_phrase(self):
+        self._text_reader.say("Привет")
         print("Я тебя услышал!")
 
     @staticmethod
@@ -20,7 +22,7 @@ class Recognizer:
     def is_welcome_phrase(self, phrase: str) -> bool:
         words = map(lambda x: x.strip(string.punctuation), phrase.lower().split())
         clean_phrase = ' '.join(words)
-        return f"привет {self.name}".lower() in clean_phrase
+        return self.name.lower() in clean_phrase
 
     def wait_name(self):
         with sr.Microphone() as mic:

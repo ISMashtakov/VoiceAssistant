@@ -1,6 +1,8 @@
 import string
 from typing import Callable, TypeVar
 
+from audio.text_reader import TextReader
+
 
 class Command:
     T = TypeVar('T')
@@ -10,6 +12,7 @@ class Command:
         self.phrase = ' '.join(words)
         self.func = func
         self.text_confirmation = text_confirmation
+        self.text_reader = TextReader()
 
     def is_some_phrase(self, phrase: str) -> bool:
         words = map(lambda x: x.strip(string.punctuation), phrase.lower().split())
@@ -18,5 +21,5 @@ class Command:
 
     def execute(self) -> T:
         if self.text_confirmation:
-            pass
+            self.text_reader.say(self.text_confirmation)
         return self.func()
