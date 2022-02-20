@@ -6,5 +6,6 @@ class TextReader:
         self.engine = pyttsx3.init()
 
     def say(self, text: str):
+        print(text)
         self.engine.say(text)
         self.engine.runAndWait()

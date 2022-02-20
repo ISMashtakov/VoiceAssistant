@@ -13,7 +13,12 @@ PREVIOUS_SONG = Command(
 
 STOP = Command(
     ['Останови', 'Останови музыку', 'Поставь на паузу', 'Пауза'],
-    lambda: Keyboard.keyDown(Keyboard.VK_MEDIA_STOP), 'Пауза'
+    lambda: Keyboard.keyDown(Keyboard.VK_MEDIA_PLAY_PAUSE), 'Пауза'
 )
 
-ALL_COMMANDS = [NEXT_SONG, PREVIOUS_SONG, STOP]
+RESUME = Command(
+    ['Включи', 'Продолжи', 'Распаузи'],
+    lambda: Keyboard.keyDown(Keyboard.VK_MEDIA_PLAY_PAUSE), 'Продолжаю'
+)
+
+ALL_COMMANDS = [NEXT_SONG, PREVIOUS_SONG, STOP, RESUME]

@@ -7,7 +7,7 @@ NAME = "Пятница"
 
 if __name__ == '__main__':
     recognizer = Recognizer(NAME)
-    executor = CommandExecutor(ALL_COMMANDS)
+    executor = CommandExecutor(recognizer, ALL_COMMANDS)
     while True:
         command_text = recognizer.get_next_command()
         print(command_text)
