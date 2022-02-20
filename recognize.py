@@ -1,8 +1,7 @@
-import string
-
 import speech_recognition as sr
+
 from audio.text_reader import TextReader
-from helpers import clean_phrase
+from helpers.text_helper import clean_phrase
 
 
 class Recognizer:
@@ -31,7 +30,8 @@ class Recognizer:
                 audio = self._recognition.listen(mic)
                 try:
                     text = self._recognition.recognize_google(audio, language=self.language)
-                except:
+                except Exception as ex:
+                    print(ex)
                     continue
                 if self.is_welcome_phrase(text):
                     self.print_detected_phrase()
@@ -45,5 +45,6 @@ class Recognizer:
             audio = self._recognition.listen(mic)
             try:
                 return self._recognition.recognize_google(audio, language=self.language)
-            except:
+            except Exception as ex:
+                print(ex)
                 return ''

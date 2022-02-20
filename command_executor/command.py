@@ -2,7 +2,7 @@ from typing import Callable, TypeVar, Union, List
 
 from audio.text_reader import TextReader
 
-from helpers import clean_phrase
+from helpers.text_helper import clean_phrase
 
 
 class Command:
@@ -16,9 +16,6 @@ class Command:
         self.func = func
         self.text_confirmation = text_confirmation
         self.text_reader = TextReader()
-
-    def is_some_phrase(self, phrase: str) -> bool:
-        return clean_phrase(phrase) in self.phrases
 
     def execute(self) -> T:
         if self.text_confirmation:
