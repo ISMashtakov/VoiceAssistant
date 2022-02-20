@@ -2,6 +2,7 @@ import string
 
 import speech_recognition as sr
 from audio.text_reader import TextReader
+from helpers import clean_phrase
 
 
 class Recognizer:
@@ -20,9 +21,7 @@ class Recognizer:
         print("Слушаю")
 
     def is_welcome_phrase(self, phrase: str) -> bool:
-        words = map(lambda x: x.strip(string.punctuation), phrase.lower().split())
-        clean_phrase = ' '.join(words)
-        return f"привет {self.name}".lower() in clean_phrase
+        return f"привет {self.name}".lower() in clean_phrase(phrase)
 
     def wait_name(self):
         with sr.Microphone() as mic:
@@ -30,7 +29,10 @@ class Recognizer:
                 self.print_detecting_phrase()
                 self._recognition.adjust_for_ambient_noise(mic)
                 audio = self._recognition.listen(mic)
-                text = self._recognition.recognize_google(audio, language=self.language)
+                try:
+                    text = self._recognition.recognize_google(audio, language=self.language)
+                except:
+                    continue
                 if self.is_welcome_phrase(text):
                     self.print_detected_phrase()
                     break
@@ -41,4 +43,7 @@ class Recognizer:
             self.print_detecting_phrase()
             self._recognition.adjust_for_ambient_noise(mic)
             audio = self._recognition.listen(mic)
-            return self._recognition.recognize_google(audio, language=self.language)
+            try:
+                return self._recognition.recognize_google(audio, language=self.language)
+            except:
+                return ''

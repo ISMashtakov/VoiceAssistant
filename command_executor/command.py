@@ -1,23 +1,24 @@
-import string
-from typing import Callable, TypeVar
+from typing import Callable, TypeVar, Union, List
 
 from audio.text_reader import TextReader
+
+from helpers import clean_phrase
 
 
 class Command:
     T = TypeVar('T')
 
-    def __init__(self, phrase: str, func: Callable[[], T], text_confirmation: str = ''):
-        words = map(lambda x: x.strip(string.punctuation), phrase.lower().split())
-        self.phrase = ' '.join(words)
+    def __init__(self, phrases: Union[List[str], str], func: Callable[[], T], text_confirmation: str = ''):
+        if isinstance(phrases, str):
+            self.phrases = [clean_phrase(phrases)]
+        else:
+            self.phrases = list(map(clean_phrase, phrases))
         self.func = func
         self.text_confirmation = text_confirmation
         self.text_reader = TextReader()
 
     def is_some_phrase(self, phrase: str) -> bool:
-        words = map(lambda x: x.strip(string.punctuation), phrase.lower().split())
-        clean_phrase = ' '.join(words)
-        return self.phrase == clean_phrase
+        return clean_phrase(phrase) in self.phrases
 
     def execute(self) -> T:
         if self.text_confirmation:
