@@ -22,7 +22,8 @@ class TestRecognizer(TestCase):
 
     @patch('recognize.sr.Recognizer', sr_mock.Recognizer)
     @patch('recognize.sr.Microphone', sr_mock.Microphone)
-    @patch('recognize.Recognizer.print_detecting_phrase')
+    @patch('recognize.Recognizer.print_detected_phrase')
+    @patch('recognize.Recognizer.print_detecting_phrase', lambda x: None)
     def test_wait_name(self, print_mock: MagicMock):
         sr_mock.Recognizer.set_texts(['Плохой текст', 'Привет Имя'])
 
@@ -34,7 +35,8 @@ class TestRecognizer(TestCase):
 
     @patch('recognize.sr.Recognizer', sr_mock.Recognizer)
     @patch('recognize.sr.Microphone', sr_mock.Microphone)
-    @patch('recognize.Recognizer.print_detecting_phrase')
+    @patch('recognize.Recognizer.print_detected_phrase')
+    @patch('recognize.Recognizer.print_detecting_phrase', lambda x: None)
     def test_get_next_command(self, print_mock: MagicMock):
         sr_mock.Recognizer.set_texts(['Плохой текст', 'Привет Имя', 'Команда', 'Иной текст'])
         recognizer = Recognizer('Имя')
