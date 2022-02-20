@@ -1,6 +1,6 @@
 from typing import List, Optional, Dict, Iterator, Tuple
 
-from audio.text_reader import TextReader
+from audio.audio import Audio
 from .command import Command
 from .semantic_proximity import Embedding, SemanticController
 from recognize import Recognizer
@@ -28,7 +28,7 @@ class CommandExecutor:
     def __init__(self, recognizer: Recognizer,  commands: Optional[List[Command]] = None):
         self.__recognizer = recognizer
         self.__semantic_controller = SemanticController()
-        self.__text_reader = TextReader()
+        self._audio = Audio()
         self.commands = _Commands()
 
         if commands:
@@ -41,7 +41,8 @@ class CommandExecutor:
         self.no_embedding = self.__semantic_controller.get_embedding('нет')
 
     def _confirm_not_sure_command(self, command: Embedding) -> bool:
-        self.__text_reader.say(f'Вы имели ввиду: {command}?')
+        self._audio.say(f'Вы имели ввиду: {command}?')
+        self._audio.play_signal()
         text = self.__recognizer.get_next_text()
         answer, dist = self.__semantic_controller.get_closest(
             self.__semantic_controller.get_embedding(text),

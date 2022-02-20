@@ -1,6 +1,6 @@
 from typing import Callable, TypeVar, Union, List
 
-from audio.text_reader import TextReader
+from audio.audio import Audio
 
 from helpers.text_helper import clean_phrase
 
@@ -15,9 +15,9 @@ class Command:
             self.phrases = list(map(clean_phrase, phrases))
         self.func = func
         self.text_confirmation = text_confirmation
-        self.text_reader = TextReader()
+        self.audio = Audio()
 
     def execute(self) -> T:
         if self.text_confirmation:
-            self.text_reader.say(self.text_confirmation)
+            self.audio.say(self.text_confirmation)
         return self.func()

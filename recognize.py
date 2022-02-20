@@ -1,6 +1,6 @@
 import speech_recognition as sr
 
-from audio.text_reader import TextReader
+from audio.audio import Audio
 from helpers.text_helper import clean_phrase
 from helpers.meta_singleton import MetaSingleton
 
@@ -10,10 +10,10 @@ class Recognizer(metaclass=MetaSingleton):
         self.name = name
         self.language = language
         self._recognition = sr.Recognizer()
-        self._text_reader = TextReader()
+        self._audio = Audio()
 
     def print_detected_phrase(self):
-        self._text_reader.say("Привет")
+        self._audio.say("Привет")
 
     @staticmethod
     def print_detecting_phrase():
@@ -43,6 +43,7 @@ class Recognizer(metaclass=MetaSingleton):
 
     def get_next_command(self) -> str:
         self.wait_name()
+        self._audio.play_signal()
         while True:
             text = self.get_next_text()
             if text:
